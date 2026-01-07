@@ -1,56 +1,57 @@
 # TcpPing v0.1.3
 
-Простая утилита для отправления запросов на TCP сервер.
+A simple utility for sending requests to a TCP server.
 
-## Компилирование и запуск приложения
+## Compiling and Running the Application
 
-Сначала клонируем репозиторий:
-`git clone https://github.com/arducat/tcpping.git`
+First, clone the repository:  
+`git clone https://github.com/leadway-team/tcpping.git`
 
-Если вы хотите скомпилировать и сразу запустить:
-`dub run --build=release`
-Если вы хотите просто скомпилировать:
+If you want to compile and run immediately:  
+`dub run --build=release`  
+If you only want to compile:  
 `dub build --build=release`
 
-Скомпилированная версия соберется в корне папки.
+The compiled version will be placed in the root folder.  
+The pre-built binary file can also be found in the releases.
 
-Так же готовый бинарный файл можно найти в релизах.
+## Application Usage
 
-## Использование приложения
+TcpPing has two usage modes:  
+1. "Quick" mode (introduced in v0.1.1, expanded in v0.1.2)  
+2. TcpPing Console (introduced in v0.1.2)
 
-В TcpPing есть два типа использования:
-1. "Быстрый" режим (появился в v0.1.1, был дополнен в v0.1.2)
-2. Консоль TcpPing (появился в v0.1.2)
+### Using "Quick" Mode
 
-### Использование "быстрого" режима
+The `-q` flag enables "Quick" mode.  
+Immediately after it, specify either `-a [TCP server address]` or `--address [TCP server address]`.  
+After the address, provide either `-s [message]` or `--send [message]`.
 
-За "быстрый" режим отвечает флаг `-q`.  
-Сразу после него должен быть либо `-a [адрес tcp сервера]`, либо `--address [адрес tcp сервера]`.  
-После адреса должен быть либо `-s [сообщение]`, либо `--send [сообщение]`.  
+This will send your message to the specified TCP server.  
+Example:  
+`tcpping -q -a 127.0.0.1:1234 -s Hello`
 
-Это должно отправить на указаный TCP сервер Ваше сообщение.  
-Пример:  
-`tcpping -q -a 127.0.0.1:1234 -s Привет`  
+### Using TcpPing Console
 
-### Использование Консоли TcpPing
+To enter TcpPing Console, simply run without arguments.
 
-Чтобы войти в Консоль TcpPing, достаточно не указывать аргументы.  
+Inside the console, the following commands are available:  
+- `help` – displays help information  
+- `ver` – shows version  
+- `connect [address]` – connects to a TCP server. If no address is provided, the program will prompt you.  
+- `send [message]` – sends a message to the TCP server. If no message is provided, the program will prompt you.  
 
-Внутри консоли есть следующие команды:  
- -  help - показывает справку  
- -  ver - показывает версию  
- -  connect \[адрес] - подключает к TCP серверу. Если Вы не указали адрес, то программа у Вас его спросит.  
- -  send \[сообщение] - отправляет на TCP сервер сообщение. Если Вы не указали сообщение, то программа у Вас его спросит.  
+Note: Use `connect` before `send`, otherwise the message will not be sent.
 
-Внимание: используйте send до connect, иначе сообщение не будет отправлено.  
+### TcpPing Features
 
-### Особенности TcpPing
+ArduCat had two options:  
+1. Reconnect every time a message is sent, allowing the TCP server to be changed.  
+2. Not allow changing the TCP server.  
 
-У ArduCat был выбор:  
-1. Либо каждый раз переподключатся при отправлении сообщения, но зато иметь возможность менять TCP сервер;
-2. Либо не иметь возможность менять TCP сервер.
-Как вы понимаете, ArduCat выбрал 1й вариант. Каждый раз, когда TcpPing отправляет сообщение, оно переподключается к серверу.  
-Прошу Вас это учесть.  
+As you can see, ArduCat chose the first option. Every time TcpPing sends a message, it reconnects to the server.  
+Please take this into account.
 
-## Благодарности
-1. Спасибо Grisshink'у
+## Acknowledgments
+1. Thanks to Grisshink  
+2. Thanks to the disbanded FTeam
