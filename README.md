@@ -13,7 +13,6 @@ If you only want to compile:
 `dub build --build=release`
 
 The compiled version will be placed in the root folder.  
-The pre-built binary file can also be found in the releases.
 
 ## Application Usage
 

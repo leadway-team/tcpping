@@ -2,7 +2,6 @@
 docs.json
 __dummy.html
 docs/
-old/
 /tcpping
 tcpping.so
 tcpping.dylib
