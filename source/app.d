@@ -44,8 +44,40 @@ void tcpsend(string addr_s, int port, string msg) {
     tcps.close();
 }
 
+void tcpsendw(string addr_s, int port, string msg) {
+    auto tcps = new TcpSocket();
+    auto addr = new InternetAddress(std.socket.InternetAddress.parse(addr_s), to!ushort(port));
+    tcps.connect(addr);
+    tcps.send(msg);
+    
+    cwritef("<b>Waiting for a response...</b> ");
+    stdout.flush();
+    
+    ubyte[1024] buf;
+    long received = tcps.receive(buf[]);
+    
+    if (received > 0) {
+        auto data = buf[0..cast(size_t)received];
+        size_t nullPos = data.countUntil(cast(ubyte)0);
+        
+        if (nullPos != data.length) {
+            data = data[0..nullPos];
+        }
+        
+        string response = cast(string)data;
+        write(response);
+    } else {
+    	uerr("connection closed", 'e');
+    	tcps.close();
+    	return;
+    }
+    
+    uerr("", 's');
+    tcps.close();
+}
+
 int quick(string[] args) {
-    cwritefln("<b>Quick TcpPing</b>:<b><grey> v0.1.3</grey></b>");
+    cwritefln("<b>Quick TcpPing</b>:<b><grey> v0.1.4</grey></b>");
     
     if (args.length < 6) {
         uerr("Not enough arguments.", 'e');
@@ -71,7 +103,7 @@ int quick(string[] args) {
 }
 
 void shell() {
-    cwritefln("<b>TcpPing Console</b>:<b><grey> v0.1.3</grey></b>");
+    cwritefln("<b>TcpPing Console</b>:<b><grey> v0.1.4</grey></b>");
     bool gogo = true;
     string addr_s = "127.0.0.1";
     int port = 5555;
@@ -118,11 +150,21 @@ void shell() {
                     tcpsend(addr_s, port, tmp);
                 }
                 break;
+            case "sendw":
+                if (input.length == 2) {
+                    tcpsendw(addr_s, port, input[1]);
+                } else {
+                    write("Message: ");
+                    stdout.flush();
+                    string tmp = stdin.readln().strip();
+                    tcpsendw(addr_s, port, tmp);
+                }
+                break;
             case "help":
-                cwritefln("<b>Commands:\n  connect [address:port]</b> - Connects to a TCP server. If server address is not specified, you will be prompted. <b><red>USE BEFORE \"send\"!</red>\n  send [message]</b> - Sends message to connected TCP server. <b><red>USE AFTER \"connect\"!</red>\n  ver</b> - Displays TcpPing Console version.\n  <b>exit</b> - Exits TcpPing Console.");
+                cwritefln("<b>Commands:\n  connect [address:port]</b> - connects to a TCP server. If server address is not specified, you will be prompted. <b><red>USE BEFORE \"send\"!</red>\n  send [message]</b> - sends message to connected TCP server. <b><red>USE AFTER \"connect\"!</red>\n  sendw [message]</b> - does the same as send, but also waits for a response from the server. <b><red>USE AFTER \"connect\"!</red>\n  ver</b> - Displays TcpPing Console version.\n  <b>exit</b> - Exits TcpPing Console.");
                 break;
             case "ver":
-                cwritefln("<b>TcpPing Console</b>:<b><grey> v0.1.3</grey></b>");
+                cwritefln("<b>TcpPing Console</b>:<b><grey> v0.1.4</grey></b>");
                 break;
             
             default:

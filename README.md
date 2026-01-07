@@ -1,4 +1,4 @@
-# TcpPing v0.1.3
+# TcpPing v0.1.4
 
 A simple utility for sending requests to a TCP server.
 
@@ -39,10 +39,11 @@ Inside the console, the following commands are available:
 - `ver` – shows version  
 - `connect [address]` – connects to a TCP server. If no address is provided, the program will prompt you.  
 - `send [message]` – sends a message to the TCP server. If no message is provided, the program will prompt you.  
+- `sendw [message]` - does the same as send, but also waits for a response from the server.  
 
-Note: Use `connect` before `send`, otherwise the message will not be sent.
+Note: Use `connect` before `send` and `sendw`, otherwise the message will not be sent.
 
-### TcpPing Features
+### TcpPing Peculiarities
 
 ArduCat had two options:  
 1. Reconnect every time a message is sent, allowing the TCP server to be changed.  
