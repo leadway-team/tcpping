@@ -56,21 +56,25 @@ void tcpsendw(string addr_s, int port, string msg) {
     ubyte[1024] buf;
     long received = tcps.receive(buf[]);
     
-    if (received > 0) {
-        auto data = buf[0..cast(size_t)received];
-        size_t nullPos = data.countUntil(cast(ubyte)0);
-        
-        if (nullPos != data.length) {
-            data = data[0..nullPos];
+    if (received <= 0) {
+        if (received == 0) {
+            uerr("connection closed", 'e');
+        } else {
+            uerr("receive error", 'e');
         }
-        
-        string response = cast(string)data;
-        write(response);
-    } else {
-    	uerr("connection closed", 'e');
-    	tcps.close();
-    	return;
+        tcps.close();
+        return;
     }
+    
+    auto data = buf[0..cast(size_t)received];
+    size_t nullPos = data.countUntil(cast(ubyte)0);
+    
+    if (nullPos != size_t.max && nullPos < data.length) {
+        data = data[0..nullPos];
+    }
+    
+    string response = cast(string)data;
+    writeln(response.strip());
     
     uerr("", 's');
     tcps.close();
