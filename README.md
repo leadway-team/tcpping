@@ -1,3 +1,7 @@
+# Передано в ACPA!
+Это означает, что проект больше не будет получать какие-либо обновления.  
+Де-факто в состоянии Public Archive с февраля 2026.
+
 # TcpPing v0.1.4
 
 A simple utility for sending requests to a TCP server.
